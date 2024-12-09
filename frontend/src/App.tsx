@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
-import { fetchRAGResults } from "./apiService";
+import { fetchServerStatus } from "./apiService";
 
 interface Message {
   role: "user" | "bot";
@@ -14,36 +14,37 @@ const App: React.FC = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
+    // Add the user's message to the chat
     setMessages((prev) => [...prev, { role: "user", content: input }]);
 
     try {
-      const response = await fetchRAGResults(input);
-      const firstResult = response.results[0];
+      // Fetch server status from the /success endpoint
+      const response = await fetchServerStatus();
       
-      if (firstResult) {
-        const botResponse = `Solution:\n${firstResult.solution_code}`;
-        setMessages((prev) => [...prev, { role: "bot", content: botResponse }]);
-      } else {
-        setMessages((prev) => [
-          ...prev,
-          { role: "bot", content: "No results found." },
-        ]);
-      }
-    } catch (error) {
-      console.error("Error fetching RAG results:", error);
+      // Add the server's response to the chat
       setMessages((prev) => [
         ...prev,
-        { role: "bot", content: "Error fetching results." },
+        { role: "bot", content: response.message }, // Display server message
+      ]);
+    } catch (error) {
+      console.error("Error fetching server status:", error);
+
+      // Add an error message to the chat if fetching the server status fails
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", content: "Error: Could not fetch server status." },
       ]);
     }
 
+    // Clear the input field
     setInput("");
   };
 
   return (
     <div className="chat-app">
-      <div className="chat-header">coderRAG</div>
+      <div className="chat-header">omni</div>
 
+      {/* Chat Functionality */}
       <div className="chat-container">
         <div className="chat-box">
           {messages.map((msg, index) => (
