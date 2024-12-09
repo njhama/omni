@@ -6,25 +6,31 @@ body {
     color: #fff;
   }
   
-  /* Chat container */
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    max-width: 800px;
-    margin: 0 auto;
-    border: 1px solid #333;
-    background: #2b2b2b;
-  }
-  
-  /* Header */
+  /* Full-width header bar */
   .chat-header {
-    background-color: #333;
+    width: 100%; /* Full width */
     padding: 16px;
+    background-color: #333;
+    border-bottom: 1px solid #444;
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
     color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Main container */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px); /* Adjust for the height of the header */
+    max-width: 800px; /* Wider layout */
+    margin: 0 auto;
+    border: 1px solid #333;
+    background: #2b2b2b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   }
   
   /* Chat box */
@@ -37,7 +43,7 @@ body {
     gap: 8px;
   }
   
-  /* Chat message styles */
+  /* Chat message bubbles */
   .chat-message {
     padding: 12px;
     border-radius: 8px;
@@ -51,19 +57,13 @@ body {
     color: #fff;
   }
   
-  .chat-message.agent {
+  .chat-message.bot {
     align-self: flex-start;
     background-color: #444;
     color: #eee;
   }
   
-  .chat-message.system {
-    align-self: center;
-    color: #aaa;
-    font-style: italic;
-  }
-  
-  /* Chat input */
+  /* Chat input box */
   .chat-input {
     display: flex;
     padding: 12px;
